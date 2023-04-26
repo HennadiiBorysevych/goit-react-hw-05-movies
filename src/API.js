@@ -13,3 +13,10 @@ export const searchMovieById = async id => {
   const data = await response.json();
   return data;
 };
+export const searchMovieByQuery = async query => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/search/movie${KEY}&query=${query}`
+  );
+  const data = await response.json();
+  return data.results;
+};
