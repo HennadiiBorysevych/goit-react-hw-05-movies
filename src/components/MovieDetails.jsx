@@ -1,38 +1,30 @@
-import { useParams } from 'react-router-dom';
-import { searchMovieById, searchMovieByQuery } from './../API';
+import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
+import { searchMovieById } from './../API';
 import { useEffect, useState } from 'react';
+
 import {
   MovieDetailsContainer,
   OverviewContainer,
   InfoContainer,
-  Input,
   MovieDetailsWrapper,
-  MovieDetailsTitle
+  MovieDetailsTitle,
+  AdittionalInfoList,
 } from './MovieDetails.styled';
 
-// import { Link } from 'react-router-dom';
 const MovieDetails = () => {
   const [movie, setMovie] = useState({});
-  const [searchQuery, setSearchQuery] = useState('');
-  console.log(movie);
   const { movieId } = useParams();
+  const location = useLocation();
 
   useEffect(() => {
-    if (movieId) {
-      searchMovieById(movieId).then(setMovie).catch(console.log);
-    } else if (searchQuery) {
-      searchMovieByQuery(searchQuery).then(setMovie).catch(console.log);
-    }
-  }, [movieId, searchQuery]);
+    searchMovieById(movieId).then(setMovie).catch(console.log);
+  }, [movieId]);
 
   return (
     <MovieDetailsWrapper>
-      <h1>Search movies</h1>
-      <Input
-        type="text"
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-      />
+      <button>
+        <Link to={location?.state?.from ?? '/'}>Go back</Link>
+      </button>
       {Object.keys(movie).length > 0 && (
         <MovieDetailsContainer>
           <img
@@ -50,6 +42,18 @@ const MovieDetails = () => {
             <OverviewContainer>
               <h3>Genres</h3>
               <p>{movie.genres.map(({ name }) => name).join(', ')}</p>
+            </OverviewContainer>
+            <OverviewContainer>
+              <h3>Additional Info</h3>
+              <AdittionalInfoList>
+                <li>
+                  <Link to="cast">Cast</Link>
+                </li>
+                <li>
+                  <Link to="reviews">Reviews</Link>
+                </li>
+              </AdittionalInfoList>
+              <Outlet />
             </OverviewContainer>
           </InfoContainer>
         </MovieDetailsContainer>
