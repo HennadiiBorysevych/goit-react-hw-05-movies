@@ -1,6 +1,6 @@
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
 import { searchMovieById } from './../API';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   MovieDetailsContainer,
@@ -15,7 +15,8 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState({});
   const { movieId } = useParams();
   const location = useLocation();
-
+  const prePage = useRef(location?.state?.from ?? '/');
+  
   useEffect(() => {
     searchMovieById(movieId).then(setMovie).catch(console.log);
   }, [movieId]);
@@ -23,7 +24,7 @@ const MovieDetails = () => {
   return (
     <MovieDetailsWrapper>
       <button>
-        <Link to={location?.state?.from ?? '/'}>Go back</Link>
+        <Link to={prePage.current}>Go back</Link>
       </button>
       {Object.keys(movie).length > 0 && (
         <MovieDetailsContainer>

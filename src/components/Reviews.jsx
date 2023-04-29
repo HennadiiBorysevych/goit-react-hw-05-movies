@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getMovieReviews } from './../API';
 import { useParams } from 'react-router-dom';
-import {CastList,CastTitle} from "./Cast.styled";
+import { CastList, CastTitle,ReviewTitle } from './Cast.styled';
 
 export const Reviews = () => {
   const [movie, setMovie] = useState([]);
-
-  console.log(movie)
-
   const { movieId } = useParams();
-  console.log( movieId)
-  
+
   useEffect(() => {
     getMovieReviews(movieId).then(setMovie).catch(console.log);
   }, [movieId]);
@@ -18,8 +14,16 @@ export const Reviews = () => {
   return (
     <section>
       <CastTitle>Reviews</CastTitle>
-        <CastList>
-        </CastList>
+      <CastList>
+        {movie.map(({id, author,content})=>{
+          return (
+            <li key={id}>
+              <ReviewTitle>Author: {author}</ReviewTitle>
+              <p>{content}</p>
+            </li>
+          )
+        })}
+      </CastList>
     </section>
   );
 };

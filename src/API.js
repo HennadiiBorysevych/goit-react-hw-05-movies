@@ -31,7 +31,7 @@ export const searchMovieCast = async id => {
 };
 export const getMovieReviews = async (movieId) => {
   const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}/reviews${KEY}}`
+    `https://api.themoviedb.org/3/movie/${movieId}/reviews${KEY}`
   );
   const data = await response.json();
   return data.results;
