@@ -8,6 +8,7 @@ export const Movies = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const location = useLocation();
+  
   useEffect(() => {
     searchMovieByQuery(searchQuery).then(setSearchResult).catch(console.log);
   }, [searchQuery]);

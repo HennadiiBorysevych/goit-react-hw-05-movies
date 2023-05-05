@@ -1,5 +1,5 @@
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom';
-import { searchMovieById } from './../API';
+import { searchMovieById } from '../../API';
 import { useEffect, useRef, useState } from 'react';
 
 import {

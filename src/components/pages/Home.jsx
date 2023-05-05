@@ -6,6 +6,7 @@ import { SearchTitle,SearchList } from '../pages/Movies.styled';
 const Home = () => {
   const [trending, setTrending] = useState([]);
   const location = useLocation();
+  
   useEffect(() => {
     trendingMovies().then(setTrending);
   }, []);
