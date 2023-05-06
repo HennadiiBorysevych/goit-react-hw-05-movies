@@ -1,18 +1,24 @@
 import { searchMovieByQuery } from '../../API';
-
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Input,SearchTitle,SearchList } from '../pages/Movies.styled';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Input, SearchTitle, SearchList } from '../pages/Movies.styled';
+
+const debounce = require('lodash.debounce');
 
 export const Movies = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const location = useLocation();
-  
-  useEffect(() => {
-    searchMovieByQuery(searchQuery).then(setSearchResult).catch(console.log);
-  }, [searchQuery]);
 
+  useEffect(() => {
+    if (!searchQuery) {
+      setSearchQuery(location?.state?.from ?? '');
+    }
+    const debouncedSearch = debounce(() => {
+      searchMovieByQuery(searchQuery).then(setSearchResult).catch(console.log);
+    }, 500);
+    debouncedSearch();
+  }, [location?.state?.from, searchQuery]);
   return (
     <>
       <SearchTitle>Search movies</SearchTitle>
@@ -26,7 +32,10 @@ export const Movies = () => {
         <SearchList>
           {searchResult.map(({ id, title }) => (
             <li key={id}>
-              <Link to={`/movies/${id}`} state={{ from: location }}>
+              <Link
+                to={`/movies/${id}`}
+                state={{ from: location, searchQuery: searchQuery }}
+              >
                 {title}
               </Link>
             </li>
