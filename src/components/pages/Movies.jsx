@@ -9,16 +9,18 @@ export const Movies = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const location = useLocation();
+  console.log('🚀 ~ file: Movies.jsx:12 ~ Movies ~ location:', location);
 
   useEffect(() => {
-    if (!searchQuery) {
-      setSearchQuery(location?.state?.from ?? '');
-    }
     const debouncedSearch = debounce(() => {
       searchMovieByQuery(searchQuery).then(setSearchResult).catch(console.log);
     }, 500);
     debouncedSearch();
-  }, [location?.state?.from, searchQuery]);
+  }, [searchQuery, location?.state?.from]);
+
+  useEffect(() => {
+    setSearchQuery(location?.state?.from ?? '');
+  }, [location?.state?.from]);
   return (
     <>
       <SearchTitle>Search movies</SearchTitle>

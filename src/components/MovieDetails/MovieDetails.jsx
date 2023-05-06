@@ -18,6 +18,7 @@ const MovieDetails = () => {
   const location = useLocation();
 
   const prePage = useRef(location?.state?.from ?? '/');
+  const searchMovie = useRef(location?.state?.searchQuery ?? '');
 
   useEffect(() => {
     searchMovieById(movieId).then(setMovie).catch(console.log);
@@ -26,7 +27,7 @@ const MovieDetails = () => {
   return (
     <MovieDetailsWrapper>
       <button>
-        <Link to={prePage.current} state={{ from: location.state.searchQuery }}>
+        <Link to={prePage.current} state={{ from: searchMovie.current }}>
           Go back
         </Link>
       </button>
